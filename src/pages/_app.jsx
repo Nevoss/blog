@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }) {
               ← <span className="hidden md:inline">Back to blog</span>
             </Link>
           ) : (
-            <div />
+            <span />
           )}
           <Link
             href="/"
@@ -40,6 +40,40 @@ export default function App({ Component, pageProps }) {
       </Container>
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Component {...pageProps} />
+      <Container className="md:mt-16 mt-4 py-4 border-t md:border-0">
+        <footer>
+          <div className="text-center text-xs text-gray-500">
+            This site is built with{' '}
+            <a
+              href="https://nextjs.org/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-red-400 hover:underline hover:text-red-500 transition transition-all"
+            >
+              Next.js
+            </a>{' '}
+            and hosted on{' '}
+            <a
+              href="https://vercel.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-red-400 hover:underline hover:text-red-500 transition transition-all"
+            >
+              Vercel
+            </a>
+            . You can inspect source code on{' '}
+            <a
+              href="https://github.com/Nevoss/blog"
+              target="_blank"
+              rel="noreferrer"
+              className="text-red-400 hover:underline hover:text-red-500 transition transition-all"
+            >
+              GitHub
+            </a>
+            .
+          </div>
+        </footer>
+      </Container>
     </>
   )
 }
