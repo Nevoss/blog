@@ -1,12 +1,32 @@
 import Container from '../components/container'
 import Head from 'next/head'
 import NewsletterForm from '../components/newsletter-form'
+import config from '../config'
 
 export default function Newsletter() {
   return (
     <main>
       <Head>
         <title>Newsletter - Nevo Golan</title>
+        <meta name="twitter:title" content="Blog – Nevo Golan" />
+        <meta
+          name="twitter:description"
+          content="Subscribe to Nevo Golan blog newsletter."
+        />
+        <meta name="twitter:image" content={`${config.siteUrl}/logo.png`} />
+        <meta property="og:url" content={`${config.siteUrl}/newsletter`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Newsletter – Nevo Golan" />
+        <meta property="og:image" content={`${config.siteUrl}/logo.png`} />
+        <meta
+          property="og:description"
+          content="Subscribe to Nevo Golan blog newsletter."
+        />
+        <meta property="og:image" content={`${config.siteUrl}/logo.png`} />
+        <meta
+          name="description"
+          content="Subscribe to Nevo Golan blog newsletter."
+        />
       </Head>
       <Container className="py-4 md:py-6">
         <div className="space-y-4 md:space-y-5 mb-8">

@@ -8,7 +8,7 @@ import 'tailwindcss/tailwind.css'
 
 export default function App({ Component, pageProps }) {
   return (
-    <>
+    <div className="antialiased">
       <Head>
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <link rel="icon" href="/favicon.ico" />
@@ -31,6 +31,8 @@ export default function App({ Component, pageProps }) {
         />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
+        <meta name="twitter:site" content="@NevoGolan" />
+        <meta name="twitter:creator" content="@NevoGolan" />
       </Head>
       <Container>
         <Header />
@@ -40,6 +42,6 @@ export default function App({ Component, pageProps }) {
       <Container className="md:mt-16 mt-10 py-4 border-t md:border-0">
         <Footer />
       </Container>
-    </>
+    </div>
   )
 }

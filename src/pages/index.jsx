@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Container from '../components/container'
 import PostCard from '../components/post-card'
 import { getAllPosts } from '../api'
+import config from '../config'
 
 /**
  * Index page.
@@ -17,6 +18,25 @@ export default function Index({ posts }) {
     <div>
       <Head>
         <title>Blog - Nevo Golan</title>
+        <meta name="twitter:title" content="Blog – Nevo Golan" />
+        <meta
+          name="twitter:description"
+          content="All the latest blog post written by Nevo Golan."
+        />
+        <meta name="twitter:image" content={`${config.siteUrl}/logo.png`} />
+        <meta property="og:url" content={config.siteUrl} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Blog – Nevo Golan" />
+        <meta property="og:image" content={`${config.siteUrl}/logo.png`} />
+        <meta
+          property="og:description"
+          content="All the latest blog post written by Nevo Golan."
+        />
+        <meta property="og:image" content={`${config.siteUrl}/logo.png`} />
+        <meta
+          name="description"
+          content="All the latest blog post written by Nevo Golan."
+        />
       </Head>
       <main>
         <Container className="py-4 md:py-6">

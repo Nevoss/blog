@@ -6,6 +6,8 @@ import Prism from 'prismjs'
 import 'prism-themes/themes/prism-material-oceanic.css'
 import Container from '../../components/container'
 import { getPostBySlug, getPostSlugs } from '../../api'
+import config from '../../config'
+import { useRouter } from 'next/router'
 
 // loadLanguages(['php'])
 
@@ -18,6 +20,7 @@ import { getPostBySlug, getPostSlugs } from '../../api'
  */
 export default function Post({ post }) {
   const date = useMemo(() => new Date(post.date), [post.date])
+  const router = useRouter()
 
   React.useEffect(() => {
     Prism.highlightAll()
@@ -27,6 +30,22 @@ export default function Post({ post }) {
     <article>
       <Head>
         <title>{post.title} - Nevo Golan</title>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${post.title} – Nevo Golan`} />
+        <meta name="twitter:description" content={post.excerpt} />
+        <meta
+          name="twitter:image"
+          content={`${config.siteUrl}${post.coverImage}`}
+        />
+        <meta property="og:url" content={`${config.siteUrl}${router.asPath}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={`${post.title} – Nevo Golan`} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta
+          property="og:image"
+          content={`${config.siteUrl}${post.coverImage}`}
+        />
+        <meta name="description" content={post.excerpt} />
       </Head>
       <Container>
         <div
