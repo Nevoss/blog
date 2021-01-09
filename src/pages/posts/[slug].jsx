@@ -55,7 +55,7 @@ export default function Post({ post }) {
           </div>
         </header>
         <hr className="border-gray-200 my-8 -mx-4 md:mx-0" />
-        <div
+        <main
           className="prose lg:prose-lg prose-red max-w-none"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />

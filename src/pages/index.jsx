@@ -20,7 +20,7 @@ export default function Index({ posts }) {
       </Head>
       <main>
         <Container className="py-4 md:py-6">
-          <div className="space-y-2 md:space-y-5 mb-8">
+          <div className="space-y-4 md:space-y-5 mb-8">
             <h1 className="text-3xl leading-9 font-extrabold text-gray-900 tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
               Blog
             </h1>
