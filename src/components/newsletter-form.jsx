@@ -40,7 +40,7 @@ export default function NewsletterForm() {
               type="submit"
               name="subscribe"
               id="mc-embedded-subscribe"
-              className="h-full bg-red-200 text-red-900 md:px-8 px-4 font-medium hover:bg-red-100 focus:bg-red-50 active:bg-red-50 transition focus:outline-none"
+              className="h-full bg-red-200 text-red-900 md:px-8 px-4 font-medium hover:bg-red-100 focus:bg-red-100 active:bg-red-100 transition focus:outline-none"
             >
               Subscribe
             </button>

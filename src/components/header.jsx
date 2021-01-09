@@ -26,20 +26,20 @@ export default function Header() {
         Nevo Golan
       </Link>
       <span />
-      <nav className="col-span-3 text-center mt-2">
+      <nav className="col-span-3 text-center mt-3">
         <ul className="flex items-center justify-center">
-          <li className="px-3">
+          <li className="px-5">
             <Link
               href="/"
-              className="text-gray-500 hover:underline hover:text-gray-700 transition transition-all"
+              className="text-gray-500 hover:text-red-600 hover:underline transition transition-all md:text-lg"
             >
               Blog
             </Link>
           </li>
-          <li className="px-3">
+          <li className="px-5">
             <Link
               href="/newsletter"
-              className="text-gray-500 hover:underline hover:text-gray-700 transition transition-all"
+              className="text-gray-500 hover:text-red-600 hover:underline transition transition-all md:text-lg"
             >
               Newsletter
             </Link>
