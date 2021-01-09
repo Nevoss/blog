@@ -6,6 +6,7 @@ import Footer from '../components/footer'
 
 import 'tailwindcss/tailwind.css'
 
+// eslint-disable-next-line react/prop-types
 export default function App({ Component, pageProps }) {
   return (
     <div className="antialiased">

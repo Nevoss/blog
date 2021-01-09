@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { join } from 'path'
-import markdownToHtml from './markdown-to-html'
+import markdownToHtml from './utils/markdown-to-html'
 
 const postsDirectory = join(process.cwd(), 'content/posts')
 
