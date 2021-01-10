@@ -1,26 +1,6 @@
-import { useMemo } from 'react'
-import NewsletterForm from './newsletter-form'
-import { useRouter } from 'next/router'
-
 export default function Footer() {
-  const router = useRouter()
-
-  const isPostPage = useMemo(() => router.asPath.includes('/posts'), [
-    router.asPath,
-  ])
-
   return (
     <footer>
-      {isPostPage && (
-        <div className="text-center mb-10 max-w-2xl mx-auto space-y-6 md:border border-gray-300 md:p-10 rounded-md">
-          <p className="text-gray-500 leading-7 max-w-lg mx-auto">
-            Do you want to receive occasional mails about what&lsquo;s going on
-            on this blog? Feel free to leave behind your email address.
-          </p>
-          <NewsletterForm />
-        </div>
-      )}
-
       <div className="text-center text-xs text-gray-500">
         This site is built with{' '}
         <a

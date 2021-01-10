@@ -8,6 +8,7 @@ import Container from '../../components/container'
 import { getPostBySlug, getPostSlugs } from '../../api'
 import config from '../../config'
 import { useRouter } from 'next/router'
+import NewsletterForm from '../../components/newsletter-form'
 
 // loadLanguages(['php'])
 
@@ -75,9 +76,16 @@ export default function Post({ post }) {
         </header>
         <hr className="border-gray-200 my-8 -mx-4 md:mx-0" />
         <main
-          className="prose lg:prose-lg prose-red max-w-none"
+          className="prose lg:prose-lg prose-red mx-auto"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+        <div className="text-center mt-24 max-w-3xl mx-auto space-y-6 md:border border-gray-300 md:p-10 rounded-md">
+          <p className="text-gray-500 leading-7 max-w-lg mx-auto">
+            Do you want to receive occasional mails about what&lsquo;s going on
+            on this blog? Feel free to leave behind your email address.
+          </p>
+          <NewsletterForm />
+        </div>
       </Container>
     </article>
   )
