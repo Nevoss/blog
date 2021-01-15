@@ -48,13 +48,11 @@ export default function Post({ post }) {
         />
         <meta name="description" content={post.excerpt} />
       </Head>
-      <Container>
+      <Container size="sm">
         <div
-          className="h-60 md:h-96 relative -mx-4 lg:mx-0 lg:rounded-lg overflow-hidden mb-6 opacity-60 shadow bg-cover bg-center hover:opacity-80 transition transition-all"
+          className={`aspect-w-2 aspect-h-1 relative -mx-4 md:rounded-md overflow-hidden opacity-70 hover:opacity-80 shadow bg-cover bg-center transition transition-all mb-6`}
           style={{ backgroundImage: `url(${post.coverImage})` }}
         />
-      </Container>
-      <Container size="sm">
         <header className="pt-6 xl:pb-10">
           <div className="space-y-1 text-center">
             <dl className="space-y-10 mb-3">

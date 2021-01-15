@@ -39,7 +39,7 @@ export default function Index({ posts }) {
         />
       </Head>
       <main>
-        <Container className="py-4 md:py-6">
+        <Container className="pb-4 md:pb-6">
           <div className="space-y-4 md:space-y-5 mb-8">
             <h1 className="text-3xl leading-9 font-extrabold text-gray-900 tracking-tight sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
               Blog
@@ -49,19 +49,17 @@ export default function Index({ posts }) {
             </p>
           </div>
           <hr className="hidden md:block border-gray-200" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-6 mt-8">
-            {posts.map((post, index) => {
-              const isWideCard = index % 10 === 0 || index % 10 === 6
-
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-8 mt-8">
+            {posts.map(({ title, excerpt, slug, date, coverImage }, index) => {
               return (
                 <PostCard
-                  className={isWideCard ? 'lg:col-span-2' : ''}
                   key={index}
-                  title={post.title}
-                  excerpt={post.excerpt}
-                  slug={post.slug}
-                  date={new Date(post.date)}
-                  coverImage={post.coverImage}
+                  title={title}
+                  excerpt={excerpt}
+                  slug={slug}
+                  coverImage={coverImage}
+                  date={new Date(date)}
+                  layout={index === 0 ? 'main' : 'default'}
                 />
               )
             })}
