@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && next export",
-    "start": "next start"
+    "start": "next start",
+    "cover:create": "node ./scripts/create-cover-image.js"
   },
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.0",
@@ -14,7 +15,6 @@
     "babel-plugin-prismjs": "^2.0.1",
     "date-fns": "^2.16.1",
     "next": "10.0.4",
-    "next-images": "^1.6.2",
     "postcss": "^8.2.1",
     "prism-themes": "^1.5.0",
     "prismjs": "^1.23.0",
@@ -33,6 +33,8 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "file-loader": "^6.2.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "responsive-loader": "^2.3.0",
+    "sharp": "^0.27.0"
   }
 }

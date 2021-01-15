@@ -9,7 +9,7 @@ import 'tailwindcss/tailwind.css'
 // eslint-disable-next-line react/prop-types
 export default function App({ Component, pageProps }) {
   return (
-    <div className="antialiased">
+    <div className="antialiased flex flex-col min-h-screen">
       <Head>
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <link rel="icon" href="/favicon.ico" />
@@ -35,12 +35,14 @@ export default function App({ Component, pageProps }) {
         <meta name="twitter:site" content="@NevoGolan" />
         <meta name="twitter:creator" content="@NevoGolan" />
       </Head>
-      <Container>
+      <Container className="w-full">
         <Header />
       </Container>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <Component {...pageProps} />
-      <Container className="md:mt-16 mt-10 py-4 border-t md:border-0">
+      <div className="flex-1">
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <Component {...pageProps} />
+      </div>
+      <Container className="md:mt-16 mt-10 py-4 border-t md:border-0 w-full">
         <Footer />
       </Container>
     </div>
