@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Link from './link'
 import format from 'date-fns/format'
+import { imagePropType } from '../utils/image'
 
 export default function PostCard({
   title,
@@ -24,8 +25,14 @@ export default function PostCard({
           className={`aspect-w-2 aspect-h-1 relative -mx-4 md:mx-0 md:rounded-md overflow-hidden opacity-70 hover:opacity-80 shadow bg-cover bg-center transition transition-all mb-6 ${
             isMain && 'lg:mb-0'
           }`}
-          style={{ backgroundImage: `url(${coverImage})` }}
-        />
+        >
+          <img
+            src={coverImage.src}
+            srcSet={coverImage.srcset}
+            alt={title}
+            sizes="(min-width: 1024px) 700px, 100vw"
+          />
+        </div>
       </Link>
       <div className={isMain ? 'lg:col-span-2' : ''}>
         <p className="mb-1 text-xs text-gray-500">
@@ -62,7 +69,7 @@ PostCard.propTypes = {
   excerpt: PropTypes.string,
   slug: PropTypes.string,
   date: PropTypes.objectOf(Date),
-  coverImage: PropTypes.string,
+  coverImage: imagePropType,
 }
 
 PostCard.defaultProps = {

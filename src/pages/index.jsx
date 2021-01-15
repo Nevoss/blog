@@ -5,6 +5,7 @@ import Container from '../components/container'
 import PostCard from '../components/post-card'
 import { getAllPosts } from '../api'
 import config from '../config'
+import { imagePropType } from '../utils/image'
 
 /**
  * Index page.
@@ -90,7 +91,7 @@ Index.propTypes = {
       excerpt: PropTypes.string,
       slug: PropTypes.string,
       date: PropTypes.string,
-      coverImage: PropTypes.string,
+      coverImage: imagePropType,
     })
   ),
 }

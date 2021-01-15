@@ -17,6 +17,7 @@
 
 # misc
 .idea/
+tmp/
 .DS_Store
 *.pem
 

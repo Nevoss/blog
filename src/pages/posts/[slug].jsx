@@ -9,6 +9,7 @@ import { getPostBySlug, getPostSlugs } from '../../api'
 import config from '../../config'
 import { useRouter } from 'next/router'
 import NewsletterForm from '../../components/newsletter-form'
+import { imagePropType } from '../../utils/image'
 
 // loadLanguages(['php'])
 
@@ -36,7 +37,7 @@ export default function Post({ post }) {
         <meta name="twitter:description" content={post.excerpt} />
         <meta
           name="twitter:image"
-          content={`${config.siteUrl}${post.coverImage}`}
+          content={`${config.siteUrl}${post.coverImage.src}`}
         />
         <meta property="og:url" content={`${config.siteUrl}${router.asPath}`} />
         <meta property="og:type" content="article" />
@@ -44,15 +45,21 @@ export default function Post({ post }) {
         <meta property="og:description" content={post.excerpt} />
         <meta
           property="og:image"
-          content={`${config.siteUrl}${post.coverImage}`}
+          content={`${config.siteUrl}${post.coverImage.src}`}
         />
         <meta name="description" content={post.excerpt} />
       </Head>
       <Container size="sm">
         <div
           className={`aspect-w-2 aspect-h-1 relative -mx-4 md:rounded-md overflow-hidden opacity-70 hover:opacity-80 shadow bg-cover bg-center transition transition-all mb-6`}
-          style={{ backgroundImage: `url(${post.coverImage})` }}
-        />
+        >
+          <img
+            src={post.coverImage.src}
+            srcSet={post.coverImage.srcset}
+            alt={post.title}
+            sizes="(min-width: 1024px) 900px, 100vw"
+          />
+        </div>
         <header className="pt-6 xl:pb-10">
           <div className="space-y-1 text-center">
             <dl className="space-y-10 mb-3">
@@ -125,7 +132,7 @@ Post.propTypes = {
     excerpt: PropTypes.string,
     slug: PropTypes.string,
     date: PropTypes.string,
-    coverImage: PropTypes.string,
     content: PropTypes.string,
+    coverImage: imagePropType,
   }),
 }
