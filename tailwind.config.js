@@ -38,6 +38,7 @@ module.exports = {
               marginRight: '-1rem !important',
               borderRadius: '0',
               fontSize: '0.95rem !important',
+              lineHeight: '2 !important',
             },
             blockquote: {
               color: theme('colors.gray.900'),
@@ -46,6 +47,12 @@ module.exports = {
             a: {
               textDecoration: 'none',
               '&:hover, &:active, &:focus': { textDecoration: 'underline' },
+            },
+            ol: {
+              paddingLeft: '1.6666667em',
+            },
+            ul: {
+              paddingLeft: '1.6666667em',
             },
           },
         },

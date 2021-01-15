@@ -1,17 +1,31 @@
-Developing a React app can be very productive and fun, but if you are used to working with Vue as I do, there are some features that I miss a lot. One of those features is watchers. In this blog post, we will try to find out how to improve the current React API and create a custom hook to help us "watch" for state changes.
+Developing a React app can be very productive and fun, but if you are used to working with Vue as I do, I bet you miss some of those great and useful features. One of those features is watchers. In this blog post, we will try to find out how to improve the current React API and create a custom hook to help us "watch" for state changes.
 
 ## What are watchers in React?
 
-Before we try to understand what are watchers specific in React we have to understand what are watchers at all. Watchers are simple functions that listen for changes on one or more pieces of state. Watchers are very helpful and usually used when there is a requirement to interact with a component that lives outside the React world.
+Before we try to understand what watchers are specific in a React app, we should try to understand what watchers are in general. Watchers are simple functions that listen for changes on one or more pieces of state. Watchers are very helpful and usually used when there is a requirement to interact with a component that lives outside the React world (side effects).
 
-In the next example, we will build a search component and fetch data from our backend based on the input value.
+In the next example, we will build a search component. We will listen for changes in the input's value, and based on that, we will send a request to the server.
 
 ## Using `useEffect` to watch for value changes
 
-The best start is to use the `useEffect` hook, it should help us listen for changes in the input value and trigger a request to the backend based on it. Let's see how it goes:
+The best start is to use the `useEffect` hook. It should help us listen for changes in the input value and trigger a request to the server based on these changes. Let's see how it goes:
 
-```
-First code part
+```jsx
+// SearchBox.jsx
+import React, { useState, useEffect } from 'react'
+
+export default function SearchBox() {
+  const [value, setValue] = useState('')
+
+  useEffect(() => {
+    // Fetching logic...
+  }, [ value ])
+
+  return <input
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+  />
+}
 ```
 
 This code should do the work, but there are two issues with the current implementation:
@@ -22,44 +36,126 @@ Let's try to resolve those issues.
 
 ## Using `useRef` to avoid first render fetching
 
-To avoid triggering fetch on the first component render, we can use a flag that will determine if the current function call is the first one or not. To do so, we will use the `useRef` hook. Let's see an example:
+To avoid triggering fetch on the first render of the component, we can use a flag that will determine if the current function call is the first one. To do so, we will use the `useRef` hook. Let's see an example:
 
+```jsx
+// SearchBox.jsx
+import React, { useState, useEffect, useRef } from 'react'
+
+export default function SearchBox() {
+  const [value, setValue] = useState('')
+  const isFirstRender = useRef(true)
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+
+      return
+    }
+
+    // Fetching logic...
+  }, [ value ])
+
+  return <input
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+  />
+}
 ```
-code
+
+The current code can do the job, but we can take it to the next step by wrapping the implementation into a custom hook.
+
+## Create a custom hook: `useWatch`
+
+Wrap the "watching" implementation into a custom hook will make the logic reusable and will clean our component code.
+
+```js
+// useWatch.js
+import { useEffect, useRef } from 'react'
+
+export default function useWatch( callback, deps ) {
+  const isFirstRender = useRef(true)
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+
+      return
+    }
+
+    callback();
+  }, deps)
+}
 ```
 
-Now, we skip calling our fetch mechanism in the first component render and use it only when the value of the input changed.
+And Here is the `SearchBox` component using the new hook we just created:
 
-We already have a good "watcher". In the next step, we will take this implementation and wrap it to create a custom hook.
+```jsx
+// SearchBox.jsx
+import React, { useState } from 'react'
+import useWatch from '../hooks/useWatch'
 
-## Create a custom hook - `useWatch`
+export default function SearchBox() {
+  const [value, setValue] = useState('')
 
-To make it even easier to use and reusable throughout the app, we will create a custom hook that will hold our "watching" mechanism.
+  useWatch(() => {
+    // Fetching logic...
+  }, [ value ])
 
-```
-code
-```
-
-This encapsulation makes our code clearer and easier to read. Here, again the `SearchBox` using the new hook we created:
-
-```
-code
+  return <input
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+  />
+}
 ```
 
 In the next step, we will try to solve the second issue, when the fetching mechanism triggers every keystroke.
 
-## Create a custom hook - `useDebouncedWatch`
+## Create a custom hook: `useDebouncedWatch`
 
-One solution for the second issue could be to delay the fetching mechanism until the user stops typing and then, and only then, trigger the function that fetches the data from the backend.
+To avoid multiple requests to the server, we could delay the fetching mechanism until the user stops typing and then, and only then, trigger the function that fetches the data from the server.
 
+```js
+// useDebouncedWatch.js
+import { useRef } from 'react'
+import useWatch from './useWatch'
+
+export default function useWatch( callback, deps, delay = 1000 ) {
+  const timeoutHandler = useRef(null)
+
+  useWatch(() => {
+    if (timeoutHandler.current) {
+      clearTimeout(timeoutHandler.current)
+    }
+
+    timeoutHandler.current = setTimeout(() => {
+      callback();
+    }, delay)
+  }, deps)
+}
 ```
-code
-```
 
-This implementation will wait 1000 milliseconds and only then it will call the callback function (which will fetch data from the backend in our case). But if the value changes again before those 1000 milliseconds, the previous timer will be cleared and a new timer will start to count. This loop will go on and on until the user stops typing. Here is the final code from our `SearchBox` component that uses the new custom hook:
+This implementation waits 1000 milliseconds and only then call the callback function (which will fetch data from the server in our case). If the value changes again before those 1000 milliseconds, the previous timer stops, and a new timer starts to count. This loop will go on and on until the user stops typing.
 
-```
-code
+Here is the final code from our `SearchBox` component uses the new custom hook:
+
+```jsx
+// SearchBox.jsx
+import React, { useState } from 'react'
+import useDebouncedWatch from '../hooks/useDebouncedWatch'
+
+export default function SearchBox() {
+  const [value, setValue] = useState('')
+
+  useDebouncedWatch(() => {
+    // Fetching logic...
+  }, [ value ])
+
+  return <input
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+  />
+}
 ```
 
 ## Conclusion
