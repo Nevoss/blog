@@ -1,8 +1,8 @@
-Developing a React app can be very productive and fun, but if you are used to working with Vue as I do, I bet you miss some of those great and useful features. One of those features is watchers. In this blog post, we will try to find out how to improve the current React API and create a custom hook to help us "watch" for state changes.
+Developing a React app can be very productive and fun, but if you are used to working with Vue as I do, I bet you miss some of those great and useful features. One of those features is `Watchers`. In this blog post, we will try to find out how to improve the current React API and create a custom hook to help us "watch" for state changes.
 
-## What are watchers in React?
+## What are `Watchers` in React?
 
-Before we try to understand what watchers are specific in a React app, we should try to understand what watchers are in general. Watchers are simple functions that listen for changes on one or more pieces of state. Watchers are very helpful and usually used when there is a requirement to interact with a component that lives outside the React world (side effects).
+Before we try to understand what `Watchers` are specific in a React app, we should try to understand what `Watchers` are in general. `Watchers` are simple functions that listen for changes on one or more pieces of state. `Watchers` are very helpful and usually used when there is a requirement to interact with a component that lives outside the React world (side effects).
 
 In the next example, we will build a search component. We will listen for changes in the input's value, and based on that, we will send a request to the server.
 
@@ -28,7 +28,7 @@ export default function SearchBox() {
 }
 ```
 
-This code should do the work, but there are two issues with the current implementation:
+This code should do the work, but two issues occur in the current implementation:
 1. It fetches the data on the first render of the component (This is how `useEffect` works).
 2. It fetches the data on each keystroke of the user (multiple times for no reason).
 
@@ -36,7 +36,7 @@ Let's try to resolve those issues.
 
 ## Using `useRef` to avoid first render fetching
 
-To avoid triggering fetch on the first render of the component, we can use a flag that will determine if the current function call is the first one. To do so, we will use the `useRef` hook. Let's see an example:
+To avoid triggering fetch on the first render of the component, we can use a flag variable to determine if the current function call is the first. To do so, we will use the `useRef` hook. Let's see an example:
 
 ```jsx
 // SearchBox.jsx
@@ -63,11 +63,11 @@ export default function SearchBox() {
 }
 ```
 
-The current code can do the job, but we can take it to the next step by wrapping the implementation into a custom hook.
+This current code can do the job, but we can take it to the next step by wrapping the implementation into a custom hook.
 
 ## Create a custom hook: `useWatch`
 
-Wrap the "watching" implementation into a custom hook will make the logic reusable and will clean our component code.
+By wrapping the `watcher` implementation into a custom hook, we will make the logic reusable and clean our component code.
 
 ```js
 // useWatch.js
@@ -88,7 +88,7 @@ export default function useWatch( callback, deps ) {
 }
 ```
 
-And Here is the `SearchBox` component using the new hook we just created:
+Here is the `SearchBox` component using the new hook we just created:
 
 ```jsx
 // SearchBox.jsx
@@ -113,7 +113,7 @@ In the next step, we will try to solve the second issue, when the fetching mecha
 
 ## Create a custom hook: `useDebouncedWatch`
 
-To avoid multiple requests to the server, we could delay the fetching mechanism until the user stops typing and then, and only then, trigger the function that fetches the data from the server.
+To avoid multiple requests to the server, we could delay the fetching mechanism until the user stops typing. Then, and only then, we should trigger the function that fetches the data from the server.
 
 ```js
 // useDebouncedWatch.js
@@ -135,7 +135,7 @@ export default function useWatch( callback, deps, delay = 1000 ) {
 }
 ```
 
-This implementation waits 1000 milliseconds and only then call the callback function (which will fetch data from the server in our case). If the value changes again before those 1000 milliseconds, the previous timer stops, and a new timer starts to count. This loop will go on and on until the user stops typing.
+This implementation waits 1000 milliseconds and only then calls the callback function (which will, in our case, fetch data from the server). If the value changes again before those 1000 milliseconds, the previous timer stops, and a new timer starts to count. This loop will go on and on until the user stops typing.
 
 Here is the final code from our `SearchBox` component uses the new custom hook:
 
@@ -160,4 +160,4 @@ export default function SearchBox() {
 
 ## Conclusion
 
-As we can see, "watchers" exist in the React world. We just had to peel the shell and expose them out. It takes only a few steps to include this elegant API from Vue into React world.
+As we can see, `Watchers` exists in the React world. We just had to peel the shell and expose it out. With only a few steps, we included this elegant API from Vue into React world.
