@@ -44,6 +44,16 @@ export default function Header() {
               Newsletter
             </Link>
           </li>
+          <li className="px-5">
+            <a
+              href="https://twitter.com/NevoGolan"
+              className="text-gray-500 hover:text-red-600 hover:underline transition transition-all md:text-lg"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Twitter
+            </a>
+          </li>
         </ul>
       </nav>
     </header>

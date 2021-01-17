@@ -4,7 +4,7 @@ import config from '../config'
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           {process.env.NODE_ENV === 'production' && (
             <>
