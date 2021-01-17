@@ -5,11 +5,12 @@ import format from 'date-fns/format'
 import Prism from 'prismjs'
 import 'prism-themes/themes/prism-material-oceanic.css'
 import Container from '../../components/container'
-import { getPostBySlug, getPostSlugs } from '../../api'
+import { getPostBySlug, getPostSlugs } from '../../posts'
 import config from '../../config'
 import { useRouter } from 'next/router'
 import NewsletterForm from '../../components/newsletter-form'
 import { imagePropType } from '../../utils/image'
+import Comments from '../../components/comments'
 
 // loadLanguages(['php'])
 
@@ -84,12 +85,15 @@ export default function Post({ post }) {
           className="prose lg:prose-lg prose-red mx-auto"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
-        <div className="text-center mt-24 max-w-3xl mx-auto space-y-6 md:border border-gray-300 md:p-10 rounded-md">
+        <div className="text-center md:mt-36 md:mb-48 mt-16 mb-20 max-w-3xl mx-auto space-y-6 md:border border-gray-300 md:p-10 rounded-md">
           <p className="text-gray-500 leading-7 max-w-lg mx-auto">
             Do you want to receive occasional mails about what&lsquo;s going on
             on this blog? Feel free to leave behind your email address.
           </p>
           <NewsletterForm />
+        </div>
+        <div className="lg:max-w-3xl max-w-2xl sm:px-4 mx-auto">
+          <Comments issueId={post.githubIssueId} />
         </div>
       </Container>
     </article>
@@ -133,6 +137,7 @@ Post.propTypes = {
     slug: PropTypes.string,
     date: PropTypes.string,
     content: PropTypes.string,
+    githubIssueId: PropTypes.number,
     coverImage: imagePropType,
   }),
 }

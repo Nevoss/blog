@@ -1,10 +1,16 @@
 import React from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import Head from 'next/head'
 import Container from '../components/container'
 import Header from '../components/header'
 import Footer from '../components/footer'
 
 import 'tailwindcss/tailwind.css'
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+})
 
 // eslint-disable-next-line react/prop-types
 export default function App({ Component, pageProps }) {
@@ -39,8 +45,11 @@ export default function App({ Component, pageProps }) {
         <Header />
       </Container>
       <div className="flex-1">
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </div>
       <Container className="md:mt-16 mt-10 py-4 border-t md:border-0 w-full">
         <Footer />

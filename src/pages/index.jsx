@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Container from '../components/container'
 import PostCard from '../components/post-card'
-import { getAllPosts } from '../api'
+import { getAllPosts } from '../posts'
 import config from '../config'
 import { imagePropType } from '../utils/image'
 

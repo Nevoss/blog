@@ -20,11 +20,11 @@ export function getPostSlugs() {
  *
  * @param slug
  * @param withContent
- * @returns {Promise<{date: *, coverImage: *, title: *, excerpt: *, slug: *, content: string}>}
+ * @returns {Promise<{date: *, githubIssueId: *, coverImage: *, title: *, excerpt: *, slug: *, content: string}>}
  */
 export async function getPostBySlug(slug, withContent = false) {
   const {
-    default: { title, excerpt, date, coverImage },
+    default: { title, excerpt, date, coverImage, githubIssueId },
   } = await import(`../content/posts/${slug}/index.js`)
 
   const content = withContent
@@ -39,6 +39,7 @@ export async function getPostBySlug(slug, withContent = false) {
     date,
     coverImage,
     slug,
+    githubIssueId,
     content,
   }
 }
