@@ -26,7 +26,7 @@ export default function Header() {
         Nevo Golan
       </Link>
       <span />
-      <nav className="col-span-3 text-center mt-3">
+      <nav className="col-span-3 text-center md:mt-3 mt-1">
         <ul className="flex items-center justify-center">
           <li className="px-5">
             <Link
