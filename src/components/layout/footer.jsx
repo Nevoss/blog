@@ -7,7 +7,7 @@ export default function Footer() {
           href="https://nextjs.org/"
           target="_blank"
           rel="noreferrer"
-          className="text-red-500 hover:underline hover:text-red-500 transition transition-all"
+          className="text-red-500 hover:underline hover:text-red-600 transition transition-all"
         >
           Next.js
         </a>{' '}
@@ -16,7 +16,7 @@ export default function Footer() {
           href="https://vercel.com/"
           target="_blank"
           rel="noreferrer"
-          className="text-red-500 hover:underline hover:text-red-500 transition transition-all"
+          className="text-red-500 hover:underline hover:text-red-600 transition transition-all"
         >
           Vercel
         </a>
@@ -25,7 +25,7 @@ export default function Footer() {
           href="https://github.com/Nevoss/blog"
           target="_blank"
           rel="noreferrer"
-          className="text-red-500 hover:underline hover:text-red-500 transition transition-all"
+          className="text-red-500 hover:underline hover:text-red-600 transition transition-all"
         >
           GitHub
         </a>
