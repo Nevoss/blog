@@ -1,117 +1,36 @@
-import React, { useMemo } from 'react'
-import Head from 'next/head'
+import { useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import format from 'date-fns/format'
 import Prism from 'prismjs'
-import 'prism-themes/themes/prism-material-oceanic.css'
-import Container from '../../components/container'
-import { getPostBySlug, getPostSlugs } from '../../posts'
-import config from '../../config'
-import { useRouter } from 'next/router'
+import renderToString from 'next-mdx-remote/render-to-string'
+import hydrate from 'next-mdx-remote/hydrate'
+import PageHeadModel from '../../models/page-head'
+import PostModel from '../../models/post'
+import { getAllPosts, getPostBySlug } from '../../data/posts'
+import { useShownBackLink } from '../../context/back-link'
+import Container from '../../components/common/container'
 import NewsletterForm from '../../components/newsletter-form'
-import { imagePropType } from '../../utils/image'
-import Comments from '../../components/comments'
+import PageHead from '../../components/page-head'
+import PostCoverImage from '../../components/posts/post-cover-image'
+import PostComments from '../../components/posts/post-comments'
 
-// loadLanguages(['php'])
-
-/**
- * Single post view.
- *
- * @param post
- * @returns {JSX.Element}
- * @constructor
- */
-export default function Post({ post }) {
-  const date = useMemo(() => new Date(post.date), [post.date])
-  const router = useRouter()
-
-  React.useEffect(() => {
-    Prism.highlightAll()
-  }, [])
-
-  return (
-    <article>
-      <Head>
-        <title>{post.title} - Nevo Golan</title>
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${post.title} – Nevo Golan`} />
-        <meta name="twitter:description" content={post.excerpt} />
-        <meta
-          name="twitter:image"
-          content={`${config.siteUrl}${post.coverImage.src}`}
-        />
-        <meta property="og:url" content={`${config.siteUrl}${router.asPath}`} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={`${post.title} – Nevo Golan`} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta
-          property="og:image"
-          content={`${config.siteUrl}${post.coverImage.src}`}
-        />
-        <meta name="description" content={post.excerpt} />
-      </Head>
-      <Container size="sm">
-        <div
-          className={`aspect-w-2 aspect-h-1 relative -mx-4 md:rounded-md overflow-hidden opacity-70 hover:opacity-80 shadow bg-cover bg-center transition transition-all mb-6`}
-        >
-          <img
-            src={post.coverImage.src}
-            srcSet={post.coverImage.srcset}
-            alt={post.title}
-            sizes="(min-width: 1024px) 900px, 100vw"
-          />
-        </div>
-        <header className="pt-6 xl:pb-10">
-          <div className="space-y-1 text-center">
-            <dl className="space-y-10 mb-3">
-              <div>
-                <dt className="sr-only">Published on</dt>
-                <dd className="text-base leading-6 font-medium text-gray-500">
-                  <time dateTime={date.toString()}>
-                    {format(date, 'EEEE, MMMM dd, yyyy')}
-                  </time>
-                </dd>
-              </div>
-            </dl>
-            <div>
-              <h1 className="font-extrabold text-gray-900 tracking-tight text-3xl md:text-4xl lg:text-5xl leading-14">
-                {post.title}
-              </h1>
-            </div>
-          </div>
-        </header>
-        <hr className="border-gray-200 my-8 -mx-4 md:mx-0" />
-        <main
-          className="prose lg:prose-lg prose-red mx-auto"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-        <div className="text-center md:mt-36 md:mb-48 mt-16 mb-20 max-w-3xl mx-auto space-y-6 md:border border-gray-300 md:p-10 rounded-md">
-          <p className="text-gray-500 leading-7 max-w-lg mx-auto">
-            Do you want to receive occasional mails about what&lsquo;s going on
-            on this blog? Feel free to leave behind your email address.
-          </p>
-          <NewsletterForm />
-        </div>
-        <div className="lg:max-w-3xl max-w-2xl sm:px-4 mx-auto">
-          <Comments issueId={post.githubIssueId} />
-        </div>
-      </Container>
-    </article>
-  )
-}
+import 'prism-themes/themes/prism-material-oceanic.css'
 
 /**
  * Get the post data.
  *
  * @param slug
- * @returns {Promise<{props: {post: {date: *, coverImage: *, title: *, excerpt: *, slug: *, content: string}}}>}
+ * @returns {any}
  */
 export async function getStaticProps({ params: { slug } }) {
-  const post = await getPostBySlug(slug, true)
+  const rawPost = getPostBySlug(slug, true)
 
   return {
     props: {
-      post,
+      rawPost: {
+        ...rawPost,
+        content: await renderToString(rawPost.content),
+      },
     },
   }
 }
@@ -122,22 +41,89 @@ export async function getStaticProps({ params: { slug } }) {
  * @returns {{paths: {params: {slug: *}}[], fallback: boolean}}
  */
 export function getStaticPaths() {
-  const paths = getPostSlugs().map((slug) => ({ params: { slug } }))
-
   return {
-    paths,
+    paths: getAllPosts(false).map(({ slug }) => ({ params: { slug } })),
     fallback: false,
   }
 }
 
+/**
+ * Single post view.
+ *
+ * @param post
+ * @returns {JSX.Element}
+ * @constructor
+ */
+export default function Post({ rawPost }) {
+  const post = useMemo(() => new PostModel(rawPost), [rawPost])
+
+  const pageHeadModel = useMemo(
+    () =>
+      new PageHeadModel({
+        title: post.title,
+        description: post.excerpt,
+        imageUrl: post.coverImage.images.find(
+          ({ width }) => width > 500 && width < 700
+        ).path,
+        url: `/posts/${post.slug}`,
+        type: 'article',
+      }),
+    [post]
+  )
+
+  const content = hydrate(post.content)
+
+  useEffect(() => Prism.highlightAll(), [content])
+  useShownBackLink()
+
+  return (
+    <>
+      <PageHead model={pageHeadModel} />
+      <article>
+        <Container size="md">
+          <PostCoverImage
+            image={post.coverImage}
+            alt={post.title}
+            sizes="(min-width: 1024px) 900px, 100vw"
+            className="mb-6 md:mb-10"
+          />
+          <header className="xl:mb-14">
+            <div className="space-y-1 text-center">
+              <dl className="mb-3">
+                <div>
+                  <dt className="sr-only">Published on</dt>
+                  <dd className="text-sm md:text-base leading-6 font-medium text-gray-500">
+                    <time dateTime={post.date.toString()}>
+                      {format(post.date, 'EEEE, MMMM dd, yyyy')}
+                    </time>
+                  </dd>
+                </div>
+              </dl>
+              <div>
+                <h1 className="font-extrabold text-gray-900 tracking-tight text-3xl md:text-4xl lg:text-5xl leading-14">
+                  {post.title}
+                </h1>
+              </div>
+            </div>
+          </header>
+          <hr className="border-gray-200 my-4 md:my-8 -mx-4 md:mx-0" />
+          <main className="prose lg:prose-lg prose-red mx-auto">{content}</main>
+          <div className="text-center md:mt-36 md:mb-48 mt-16 mb-20 max-w-3xl mx-auto space-y-6 md:border border-gray-300 md:p-10 rounded-md">
+            <p className="text-gray-500 leading-7 max-w-lg mx-auto">
+              Do you want to receive occasional mails about what&lsquo;s going
+              on on this blog? Feel free to leave behind your email address.
+            </p>
+            <NewsletterForm />
+          </div>
+          <div className="lg:max-w-3xl max-w-2xl sm:px-4 mx-auto">
+            <PostComments issueId={post.githubIssueId} />
+          </div>
+        </Container>
+      </article>
+    </>
+  )
+}
+
 Post.propTypes = {
-  post: PropTypes.shape({
-    title: PropTypes.string,
-    excerpt: PropTypes.string,
-    slug: PropTypes.string,
-    date: PropTypes.string,
-    content: PropTypes.string,
-    githubIssueId: PropTypes.number,
-    coverImage: imagePropType,
-  }),
+  rawPost: PropTypes.object.isRequired,
 }

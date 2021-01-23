@@ -1,15 +1,15 @@
-import { useMemo } from 'react'
-import { useRouter } from 'next/router'
-import Link from './link'
+import config from '../../config'
+import Link from '../common/link'
+import { useBackLinkContext } from '../../context/back-link'
+
+const twitterUserName = config.twitterHandle.replace('@', '')
 
 export default function Header() {
-  const router = useRouter()
-
-  const isIndexPage = useMemo(() => router.asPath === '/', [router.asPath])
+  const { isShown } = useBackLinkContext()
 
   return (
-    <header className="grid grid-cols-3 items-center py-6 md:py-10 gap-x-0 md:gap-x-4">
-      {!isIndexPage ? (
+    <header className="grid grid-cols-3 items-center gap-x-0 md:gap-x-4">
+      {isShown ? (
         <Link
           href="/"
           className="text-red-600 font-medium text-sm hover:underline"
@@ -23,7 +23,7 @@ export default function Header() {
         href="/"
         className="text-lg md:text-2xl font-bold text-gray-900 tracking-tight text-center"
       >
-        Nevo Golan
+        {config.siteName}
       </Link>
       <span />
       <nav className="col-span-3 text-center md:mt-3 mt-1">
@@ -46,7 +46,7 @@ export default function Header() {
           </li>
           <li className="px-5">
             <a
-              href="https://twitter.com/NevoGolan"
+              href={`https://twitter.com/${twitterUserName}`}
               className="text-gray-500 hover:text-red-600 hover:underline transition transition-all md:text-lg"
               target="_blank"
               rel="noreferrer"
@@ -56,6 +56,7 @@ export default function Header() {
           </li>
         </ul>
       </nav>
+      <span />
     </header>
   )
 }
