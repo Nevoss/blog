@@ -28,6 +28,7 @@ export default function PageHead({ model }) {
       <meta name="twitter:creator" content={model.twitterHandle} />
 
       <meta property="og:url" content={model.url} />
+      <link rel="canonical" href={model.url} />
 
       <link rel="icon" href="/favicon.ico" />
       <link
