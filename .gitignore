@@ -34,3 +34,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# Those file generated in build time
+public/robots.txt
+public/sitemap.xml
