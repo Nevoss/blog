@@ -12,6 +12,18 @@ module.exports = () => ({
       },
     })
 
+    if (!options.dev && options.isServer) {
+      const originalEntry = config.entry
+
+      config.entry = async () => {
+        const entries = { ...(await originalEntry()) }
+
+        entries['scripts/build-rss'] = [`./scripts/build-rss`]
+
+        return entries
+      }
+    }
+
     return config
   },
 })

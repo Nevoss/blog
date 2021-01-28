@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap && next export",
+    "build": "next build && next-sitemap && npm run build:rss && next export",
     "start": "next start",
-    "cover:create": "node ./scripts/create-cover-image.js"
+    "build:cover-image": "node scripts/build-cover-image.js",
+    "build:rss": "bash ./bin/buld-rss.sh"
   },
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.0",
@@ -34,6 +35,7 @@
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "feed": "^4.2.2",
     "file-loader": "^6.2.0",
     "next-sitemap": "^1.4.13",
     "prettier": "^2.2.1",

@@ -115,7 +115,7 @@ export default function Post({ rawPost }) {
             </p>
             <NewsletterForm />
           </div>
-          <div className="lg:max-w-3xl max-w-2xl sm:px-4 mx-auto">
+          <div className="lg:max-w-3xl max-w-2xl sm:px-4 mx-auto pb-8">
             <PostComments issueId={post.githubIssueId} />
           </div>
         </Container>

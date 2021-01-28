@@ -8,6 +8,10 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
+      spacing: {
+        4.5: '1.125rem',
+        5.5: '1.35rem',
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
