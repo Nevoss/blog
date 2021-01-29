@@ -6,13 +6,15 @@ import PostCommentsItem from './post-comments-item'
 import { useIsInViewport } from '../../hooks/use-is-in-viewport'
 
 export default function PostComments({ issueId }) {
-  const { elementRef, count: inViewPortCount } = useIsInViewport()
+  const { elementRef, wasInViewPort } = useIsInViewport({
+    rootMargin: '500px',
+  })
 
   const { data, status } = useQuery(
     ['comments', issueId],
     () => fetchComments(issueId),
     {
-      enabled: inViewPortCount > 0,
+      enabled: wasInViewPort,
     }
   )
 

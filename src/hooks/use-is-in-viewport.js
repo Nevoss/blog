@@ -1,17 +1,24 @@
 import { useRef, useEffect, useState } from 'react'
 
 export function useIsInViewport(options) {
-  const [data, setData] = useState({ isInViewPort: false, count: 0 })
   const elementRef = useRef()
+  const [{ isInViewPort, wasInViewPort, count }, setData] = useState({
+    isInViewPort: false,
+    wasInViewPort: false,
+    count: 0,
+  })
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
+      const isInViewPort = !!entries[0]?.isIntersecting
+
       setData((prev) => {
-        const isInViewPort = !!entries[0]?.isIntersecting
+        const count = isInViewPort ? prev.count + 1 : prev.count
 
         return {
           isInViewPort,
-          count: isInViewPort ? prev.count + 1 : prev.count,
+          count,
+          wasInViewPort: count > 0,
         }
       })
     }, options)
@@ -21,5 +28,10 @@ export function useIsInViewport(options) {
     return () => observer.disconnect()
   }, [])
 
-  return { elementRef, isInViewPort: data.isInViewPort, count: data.count }
+  return {
+    elementRef,
+    isInViewPort,
+    count,
+    wasInViewPort,
+  }
 }
