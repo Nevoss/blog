@@ -12,7 +12,7 @@ export default function Image({ model, alt, sizes, className }) {
 
   return (
     <div
-      className={`max-w-full ${className}`}
+      className={className}
       style={{
         filter: !imageLoaded ? 'blur(20px)' : 'none',
         backgroundSize: 'cover',
