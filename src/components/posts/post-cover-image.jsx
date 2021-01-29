@@ -4,11 +4,12 @@ import Image from '../common/image'
 
 export default function PostCoverImage({ image, alt, sizes, className }) {
   return (
-    <div
-      className={`aspect-w-2 aspect-h-1 -mx-4 md:mx-0 md:rounded-md overflow-hidden opacity-70 hover:opacity-80 shadow transition transition-all ${className}`}
-    >
-      <Image model={image} alt={alt} sizes={sizes} />
-    </div>
+    <Image
+      className={`aspect-w-2 aspect-h-1 -mx-4 md:mx-0 md:rounded-md overflow-hidden opacity-70 hover:opacity-80 shadow transition transition-opacity ${className}`}
+      model={image}
+      alt={alt}
+      sizes={sizes}
+    />
   )
 }
 

@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import ImageModel from '../../models/image'
 
-export default function Image({ model, alt, sizes }) {
+export default function Image({ model, alt, sizes, className }) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const ref = useRef()
 
@@ -12,7 +12,7 @@ export default function Image({ model, alt, sizes }) {
 
   return (
     <div
-      className="w-full max-w-full"
+      className={`max-w-full ${className}`}
       style={{
         filter: !imageLoaded ? 'blur(20px)' : 'none',
         backgroundSize: 'cover',
@@ -38,4 +38,9 @@ Image.propTypes = {
   model: PropTypes.instanceOf(ImageModel).isRequired,
   alt: PropTypes.string,
   sizes: PropTypes.string,
+  className: PropTypes.string,
+}
+
+Image.defaultProps = {
+  className: '',
 }
