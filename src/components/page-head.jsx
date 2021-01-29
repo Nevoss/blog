@@ -30,6 +30,8 @@ export default function PageHead({ model }) {
       <meta property="og:url" content={model.url} />
       <link rel="canonical" href={model.url} />
 
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+
       <link rel="icon" href="/favicon.ico" />
       <link
         rel="apple-touch-icon"
@@ -72,7 +74,15 @@ export default function PageHead({ model }) {
         href="/feed.json"
       />
 
-      <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+      <link
+        rel="preload"
+        href="https://rsms.me/inter/inter.css"
+        as="style"
+        onLoad="this.onload=null;this.rel='stylesheet'"
+      />
+      <noscript>
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+      </noscript>
     </Head>
   )
 }
