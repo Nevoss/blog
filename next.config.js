@@ -8,6 +8,8 @@ module.exports = () => ({
           adapter: require('responsive-loader/sharp'),
           publicPath: '/_next/static/images/',
           outputPath: `${options.isServer ? '../' : ''}static/images/`,
+          sizes: [320, 640, 960, 1200],
+          placeholder: true,
         },
       },
     })

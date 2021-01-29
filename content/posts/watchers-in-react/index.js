@@ -1,4 +1,4 @@
-import coverImage from './cover.jpg?sizes[]=400&sizes[]=600&sizes[]=800&sizes[]=1000'
+import coverImage from './cover.jpg'
 
 export default {
   title: 'Watchers in React',

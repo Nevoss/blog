@@ -54,7 +54,7 @@ export default function PostComments({ issueId }) {
             {status === 'success' &&
               data.length === 0 &&
               'No comments for this blog posts...'}
-            {status === 'loading' && data && data.length === 0 && 'Loading...'}
+            {status === 'loading' && 'Loading...'}
             {status === 'error' && 'Error fetching comments...'}
           </p>
         )}
