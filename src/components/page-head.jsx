@@ -74,15 +74,11 @@ export default function PageHead({ model }) {
         href="/feed.json"
       />
 
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
       <link
-        rel="preload"
-        href="https://rsms.me/inter/inter.css"
-        as="style"
-        onLoad="this.onload=null;this.rel='stylesheet'"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
       />
-      <noscript>
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-      </noscript>
     </Head>
   )
 }

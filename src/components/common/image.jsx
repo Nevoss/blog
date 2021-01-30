@@ -8,19 +8,24 @@ export default function Image({ model, alt, sizes, className }) {
 
   useEffect(() => {
     ref.current.onload = () => setImageLoaded(true)
+
+    if (ref.current.complete) {
+      setImageLoaded(true)
+    }
   }, [])
 
   return (
-    <div
-      className={className}
-      style={{
-        filter: !imageLoaded ? 'blur(20px)' : 'none',
-        backgroundSize: 'cover',
-        backgroundImage: `url("${model.placeholder}")`,
-      }}
-    >
+    <div className={`overflow-hidden transition transition-all ${className}`}>
+      {
+        <img
+          src={model.placeholder}
+          alt={alt}
+          style={{ filter: 'blur(20px)' }}
+          className="z-0"
+        />
+      }
       <img
-        className={`transition transition-all ${
+        className={`transition transition-all z-10 ${
           imageLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         ref={ref}

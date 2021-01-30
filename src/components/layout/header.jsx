@@ -12,7 +12,7 @@ export default function Header() {
       {isShown ? (
         <Link
           href="/"
-          className="text-red-600 font-medium text-sm hover:underline"
+          className="text-red-600 font-semibold text-sm hover:underline"
         >
           ← <span className="hidden md:inline">Back to blog</span>
         </Link>
