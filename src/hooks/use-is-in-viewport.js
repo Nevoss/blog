@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 
-export function useIsInViewport(options) {
+export default function useIsInViewport(options) {
   const elementRef = useRef()
   const [{ isInViewPort, wasInViewPort, count }, setData] = useState({
     isInViewPort: false,

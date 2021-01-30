@@ -1,0 +1,194 @@
+During the process of developing [my blog](/), I decided to create a comments section based on the GitHub issues system *(more about this subject, in a future blog post)*. To avoid unnecessary API calls and make a better UX, I decided to fetch data from the GitHub API only when the comments section is in the browser viewport.
+
+I searched for an article or a video tutorial for creating a simple `useIsInViewport` custom hook that will help me solve this issue. However, most of the search results were libraries, and I did not want to add an external library for such a simple task. Therefore, I decided to build my own custom hook.
+
+I hope this blog post will help you create your own simple but powerful `useIsInViewport` custom hook.
+
+## Wrap `IntersectionObserver` into custom hook
+
+The simplest way to determine if an HTML element is in the browser viewport is to use the browser native API `IntersectionObserver`. The `IntersectionObserver` is a class that receives a callback as an argument into its constructor. The callback will be triggered every time one of the observed HTML elements will appear in the browser viewport. The `IntersectionObserver` has four methods:
+
+1. `observe` - receives an HTML element as an argument and instructs the instance to observe this element.
+2. `unobserve` - receives an HTML element as an argument and instructs the instance to stop observe this element.
+3. `disconnect` - will instruct the instance to stop observe all HTML elements declared before.
+3. `takeRecords` - return an array of all HTML elements the instance observes.
+
+Let's start by wrapping the functionality of `IntersectionObserver` into a custom React hook *(we will call it `useIsInViewport`)*:
+
+```js
+import { useRef, useEffect, useState } from 'react'
+
+export default function useIsInViewport() {
+  const elementRef = useRef()
+  const [isInViewPort, setIsInViewPort] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const isInViewPort = !!entries[0]?.isIntersecting
+
+      setIsInViewPort(isInViewPort)
+    })
+
+    observer.observe(elementRef.current)
+
+    return () => observer.disconnect()
+  }, [])
+
+  return { elementRef, isInViewPort }
+}
+```
+
+In the example above, we created a `ref` and a `state`. The `ref` will be attached to the HTML element we want to track and determine whether it is inside or outside the browser viewport. According to that, the `state` will change.
+
+Another important thing about this code implementation, it starts the observation process when the component mounts and stops it on unmount.
+
+Let's see an example of how to use the `useIsInViewport` custom hook:
+
+
+```jsx
+import useIsInViewport from '../hooks/use-is-in-viewport'
+
+export default function Comments() {
+  const { elementRef, isInViewPort } = useIsInViewport()
+
+  useEffect(() => {
+    if (!isInViewPort) {
+      return;
+    }
+
+    // Fetch the data.
+  }, [isInViewPort])
+
+  return (
+    <div ref={elementRef}>
+      { /* all the comments */ }
+    </div>
+  )
+}
+```
+
+## Extend `useInViewPort` hook with `count` and `wasInViewport`
+
+Sometimes, it is not enough to know whether an HTML element is in the browser viewport at the current time. We also need to know how many times the HTML element was in the browser viewport or if it appeared before. For example, in my case, all I needed to know was if the user scrolled to the comments HTML element. Then, the component should fetch comments data.
+
+To achieve this goal of extending the `useInViewPort` hook, we will transform the simple state into an object with three properties:
+
+1. `isInViewport` - returns boolean that represents whether at the current time the HTML element is in the browser viewport or not.
+2. `count` - returns the number of times the HTML element entered the browser viewport.
+3. `wasInViewport` - returns boolean that represents whether the HTML element was at least once in the browser viewport.
+
+```js
+import { useRef, useEffect, useState } from 'react'
+
+export function useIsInViewport() {
+  const elementRef = useRef()
+  const [{ isInViewPort, wasInViewPort, count }, setData] = useState({
+    isInViewPort: false,
+    wasInViewPort: false,
+    count: 0
+  })
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const isInViewPort = !!entries[0]?.isIntersecting
+
+      setData((prev) => {
+        const count = isInViewPort ? prev.count + 1 : prev.count
+
+        return {
+          isInViewPort,
+          count,
+          wasInViewPort: count > 0
+        }
+      })
+    })
+
+    observer.observe(elementRef.current)
+
+    return () => observer.disconnect()
+  }, [])
+
+  return {
+    elementRef,
+    isInViewPort,
+    count,
+    wasInViewPort
+  }
+}
+```
+
+Here is how we can use those new pieces of state (just changed from `isInViewport` to `wasInViewport`):
+
+```jsx
+import useIsInViewport from '../hooks/use-is-in-viewport'
+
+export default function Comments() {
+  const { elementRef, wasInViewPort } = useIsInViewport()
+
+  useEffect(() => {
+    if (!wasInViewPort) {
+      return;
+    }
+
+    // Fetch the data.
+  }, [wasInViewPort])
+
+  return (
+    <div ref={elementRef}>
+      { /* all the comments */ }
+    </div>
+  )
+}
+```
+
+## Take advantage of `IntersectionObserver` options
+
+`IntersectionObserver` API has options that help solve some issues. One of those options, and the most useful one, in my opinion, is the `rootMargin`. The `rootMargin` allows us to change the state of the `isInViewport` to `true`, a few pixels (or `rem`, `em`, etc.) before the HTML element enters the browser viewport. To take advantage of the `rootMargin` option, we need to pass it as an object property to the `IntersectionObserver` instance.
+
+```js
+import { useRef, useEffect, useState } from 'react'
+
+export function useIsInViewport(options) {
+  // ...
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      // ...
+    }, options)
+
+    // ...
+  }, [])
+
+  // ...
+}
+```
+
+Here is how it looks like in the component, using the `isInViewport` custom hook:
+
+```jsx
+import useIsInViewport from '../hooks/use-is-in-viewport'
+
+export default function Comments() {
+  const { elementRef, wasInViewPort } = useIsInViewport({
+    rootMargin: '500px',
+  })
+
+  // ...
+}
+```
+
+To know more about the `IntersectionObserver` API options, check out <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">this guide</a>.
+
+## Conclusion
+
+Sometimes a simple custom hook can solve the problem of determining whether an HTML element is in the browser viewport or not. For more battle-tested code, Here are some libraries to check out:
+
+- <a href="https://github.com/joshwnj/react-visibility-sensor" target="_blank" rel="noreferrer"> React Visibility Sensor </a>
+- <a href="https://github.com/fkhadra/react-on-screen" target="_blank" rel="noreferrer"> React on screen </a>
+- <a href="https://github.com/roderickhsiao/react-in-viewport" target="_blank" rel="noreferrer"> React in Viewport </a>
+
+You should also check the `IntersectionObserver` API guide by "MDN Web docs": <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer"> Intersection Observer API </a>
+
+**That's it for now!**
+
+Let me know if you like this blog post in the comments below.

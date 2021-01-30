@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useQuery } from 'react-query'
 import { fetchComments, getCreateCommentsUrl } from '../../data/comments'
 import PostCommentsItem from './post-comments-item'
-import { useIsInViewport } from '../../hooks/use-is-in-viewport'
+import useIsInViewport from '../../hooks/use-is-in-viewport'
 
 export default function PostComments({ issueId }) {
   const { elementRef, wasInViewPort } = useIsInViewport({
