@@ -11,6 +11,7 @@ export default function PostCardWide({ post }) {
         <Link href={`/posts/${post.slug}`}>
           <PostCoverImage
             image={post.coverImage}
+            webpImage={post.coverImageWebP}
             alt={post.title}
             sizes="(min-width: 1024px) 800px, 100vw"
           />

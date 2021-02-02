@@ -7,6 +7,7 @@ export default class Post {
     date,
     excerpt,
     coverImage,
+    coverImageWebP,
     githubIssueId,
     content,
   }) {
@@ -17,6 +18,10 @@ export default class Post {
     this.coverImage = new Image(coverImage)
     this.content = content
     this.githubIssueId = githubIssueId
+
+    if (coverImageWebP) {
+      this.coverImageWebP = new Image(coverImageWebP)
+    }
   }
 
   /**
@@ -29,9 +34,8 @@ export default class Post {
     return {
       ...this,
       date: this.date.toISOString(),
-      coverImage: {
-        ...this.coverImage,
-      },
+      coverImage: { ...this.coverImage },
+      coverImageWebP: this.coverImageWebP ? { ...this.coverImageWebP } : null,
     }
   }
 }

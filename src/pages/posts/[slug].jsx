@@ -83,6 +83,7 @@ export default function Post({ rawPost }) {
         <Container size="md">
           <PostCoverImage
             image={post.coverImage}
+            webpImage={post.coverImageWebP}
             alt={post.title}
             sizes="(min-width: 1024px) 900px, 100vw"
             className="mb-6 md:mb-10"
