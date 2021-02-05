@@ -1,4 +1,3 @@
-import { useShownBackLink } from '../context/back-link'
 import Container from '../components/common/container'
 import NewsletterForm from '../components/newsletter-form'
 import PageHeadModel from '../models/page-head'
@@ -12,8 +11,6 @@ const pageHeadModel = new PageHeadModel({
 })
 
 export default function Newsletter() {
-  useShownBackLink()
-
   return (
     <>
       <PageHead model={pageHeadModel} />

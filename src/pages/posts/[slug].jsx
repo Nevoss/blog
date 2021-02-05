@@ -7,7 +7,6 @@ import hydrate from 'next-mdx-remote/hydrate'
 import PageHeadModel from '../../models/page-head'
 import PostModel from '../../models/post'
 import { getAllPosts, getPostBySlug } from '../../data/posts'
-import { useShownBackLink } from '../../context/back-link'
 import Container from '../../components/common/container'
 import NewsletterForm from '../../components/newsletter-form'
 import PageHead from '../../components/page-head'
@@ -74,7 +73,6 @@ export default function Post({ rawPost }) {
   const content = hydrate(post.content)
 
   useEffect(() => Prism.highlightAll(), [content])
-  useShownBackLink()
 
   return (
     <>

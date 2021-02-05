@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { BackLinkProvider } from '../context/back-link'
 import Header from '../components/layout/header'
 import Footer from '../components/layout/footer'
 import Container from '../components/common/container'
@@ -16,20 +15,20 @@ const queryClient = new QueryClient({
 export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <BackLinkProvider>
-        <div className="antialiased text-gray-900 flex flex-col min-h-screen">
-          <Container size="lg" className="py-6 md:py-10">
+      <div className="antialiased text-gray-900 flex flex-col min-h-screen">
+        <div className="bg-gray-50 mb-6 md:mb-10">
+          <Container size="lg" className="py-4 md:py-6">
             <Header />
           </Container>
-          <div className="flex-1">
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <Component {...pageProps} />
-          </div>
-          <Container size="lg" className="py-4 border-t md:border-0">
-            <Footer />
-          </Container>
         </div>
-      </BackLinkProvider>
+        <div className="flex-1">
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <Component {...pageProps} />
+        </div>
+        <Container size="lg" className="py-4 border-t md:border-0">
+          <Footer />
+        </Container>
+      </div>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
