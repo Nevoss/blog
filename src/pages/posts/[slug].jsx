@@ -12,6 +12,7 @@ import NewsletterForm from '../../components/newsletter-form'
 import PageHead from '../../components/page-head'
 import PostCoverImage from '../../components/posts/post-cover-image'
 import PostComments from '../../components/posts/post-comments'
+import { PostShare } from '../../components/posts/post-share'
 
 import 'prism-themes/themes/prism-material-oceanic.css'
 
@@ -107,6 +108,8 @@ export default function Post({ rawPost }) {
           </header>
           <hr className="border-gray-200 my-4 md:my-8 -mx-4 md:mx-0" />
           <main className="prose lg:prose-lg prose-red mx-auto">{content}</main>
+          <hr className="border-gray-200 my-4 md:my-14 -mx-4 md:mx-0" />
+          <PostShare />
           <div className="text-center md:mt-36 md:mb-48 mt-16 mb-20 max-w-3xl mx-auto space-y-6 md:border border-gray-300 md:p-10 rounded-md">
             <p className="text-gray-500 leading-7 max-w-lg mx-auto">
               Do you want to receive occasional mails about what&lsquo;s going

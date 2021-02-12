@@ -53,7 +53,7 @@ export default function PostComments({ issueId }) {
           <p className="text-center md:my-20 my-12 text-md leading-7 text-gray-300">
             {status === 'success' &&
               data.length === 0 &&
-              'No comments for this blog posts...'}
+              'No comments for this blog post...'}
             {status === 'loading' && 'Loading...'}
             {status === 'error' && 'Error fetching comments...'}
           </p>
