@@ -18,9 +18,10 @@ export default function PostComments({ issueId }) {
     }
   )
 
-  const createCommentsUrl = useMemo(() => getCreateCommentsUrl(issueId), [
-    issueId,
-  ])
+  const createCommentsUrl = useMemo(
+    () => getCreateCommentsUrl(issueId),
+    [issueId]
+  )
 
   return (
     <div ref={elementRef}>

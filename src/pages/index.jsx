@@ -32,9 +32,10 @@ export async function getStaticProps() {
  * @constructor
  */
 export default function Index({ rawPosts }) {
-  const posts = useMemo(() => rawPosts.map((post) => new Post(post)), [
-    rawPosts,
-  ])
+  const posts = useMemo(
+    () => rawPosts.map((post) => new Post(post)),
+    [rawPosts]
+  )
 
   return (
     <div>
