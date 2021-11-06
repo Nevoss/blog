@@ -10,8 +10,8 @@
     "build:rss": "bash ./bin/buld-rss.sh"
   },
   "dependencies": {
-    "@tailwindcss/aspect-ratio": "^0.2.0",
-    "@tailwindcss/typography": "^0.3.1",
+    "@tailwindcss/aspect-ratio": "^0.3.0",
+    "@tailwindcss/typography": "^0.4.1",
     "autoprefixer": "^10.1.0",
     "babel-plugin-prismjs": "^2.0.1",
     "date-fns": "^2.16.1",
@@ -28,7 +28,7 @@
     "tailwindcss": "^2.0.2"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -40,6 +40,6 @@
     "next-sitemap": "^1.4.13",
     "prettier": "^2.2.1",
     "responsive-loader": "^2.3.0",
-    "sharp": "^0.27.0"
+    "sharp": "^0.29.2"
   }
 }
