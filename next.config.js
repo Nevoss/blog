@@ -1,4 +1,7 @@
 module.exports = () => ({
+  images: {
+    disableStaticImages: true,
+  },
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.(jpe?g|png|webp)$/i,
